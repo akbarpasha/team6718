@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -16,8 +17,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 	
-	RobotDrive myRobot;
+	RobotDrive buttah;
 	Spark leftMotor, rightMotor;
+	Victor vexMotor;
 	Joystick stick = new Joystick(0);
 	Timer timer = new Timer();
 
@@ -29,7 +31,9 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		leftMotor = new Spark(1);
 		rightMotor = new Spark(0);
-		myRobot = new RobotDrive(leftMotor, rightMotor);
+		vexMotor = new Victor(2);
+		buttah = new RobotDrive(leftMotor, rightMotor);
+		buttah.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
 	}
 
 	/**
@@ -48,9 +52,9 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		// Drive for 2 seconds
 		if (timer.get() < 2.0) {
-			myRobot.drive(-0.5, 0.0); // drive forwards half speed
+			buttah.drive(-0.5, 0.0); // drive forwards half speed
 		} else {
-			myRobot.drive(0.0, 0.0); // stop robot
+			buttah.drive(0.0, 0.0); // stop robot
 		}
 	}
 
@@ -60,6 +64,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		vexMotor.set(1);
 	}
 
 	/**
@@ -67,7 +72,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		myRobot.arcadeDrive(stick);
+		buttah.arcadeDrive(stick);
 	}
 
 	/**
